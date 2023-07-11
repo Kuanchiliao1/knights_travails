@@ -1,6 +1,7 @@
 function Node(x, y) {
   // Return array of next possible moves given a position on board
   function findNextMoves(x, y) {
+    console.log(x)
     const array = []
     for (let xOffset = -2; xOffset <= 2; xOffset++) {
       if (xOffset === 0) continue
@@ -26,7 +27,9 @@ function Node(x, y) {
   function getChildren(x, y) {
     const possibleMoves = findNextMoves(x, y);
     const validMoves = getValidMoves(possibleMoves)
-    return validMoves
+    return validMoves.map(move => {
+      return Node(...move)
+    })
   }
 
   function getPath() {
@@ -34,13 +37,11 @@ function Node(x, y) {
   }
 
   return {
-    position: [x, y],
-    pathToCurrent: getPath(),
-    children: getChildren(x, y),
-    findNextMoves: findNextMoves(x, y)
+    pathToCurrent: () => getPath(),
+    children: () => getChildren(x, y),
   }
 }
 
 const node = Node(0, 0)
-console.log(node.children)
+console.log(node.children(0, 0))
 // console.log(findNextMoves(3, 3))
