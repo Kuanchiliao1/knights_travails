@@ -1,7 +1,12 @@
-function Node(x, y) {
+function Tree(root) {
+  return {
+    root: buildTree()
+  }
+}
+
+function Node(x, y, parent = false) {
   // Return array of next possible moves given a position on board
   function findNextMoves(x, y) {
-    console.log(x)
     const array = []
     for (let xOffset = -2; xOffset <= 2; xOffset++) {
       if (xOffset === 0) continue
@@ -28,7 +33,7 @@ function Node(x, y) {
     const possibleMoves = findNextMoves(x, y);
     const validMoves = getValidMoves(possibleMoves)
     return validMoves.map(move => {
-      return Node(...move)
+      return Node(...move, !!this)
     })
   }
 
@@ -39,9 +44,13 @@ function Node(x, y) {
   return {
     pathToCurrent: () => getPath(),
     children: () => getChildren(x, y),
+    position: [x, y],
+    parent: function() {
+      return parent && this
+    }
   }
 }
 
-const node = Node(0, 0)
-console.log(node.children(0, 0))
+const node = Node(3, 0)
+console.log()
 // console.log(findNextMoves(3, 3))
