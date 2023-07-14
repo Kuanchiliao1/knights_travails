@@ -1,16 +1,20 @@
 'use strict'
 function Tree(x, y) {
-  const pastMoves = [[1,4], [1,2]]
+  const pastMoves = [[x, y]]
   let root = Node(x, y)
+  let counter = 1
   
   const buildTree = (node = root) => {
     createChildren(node)
     const children = node.children
+
     children.forEach(childNode => {
+      buildTree(childNode)
+      console.log(childNode.children)
       console.log(childNode.position)
       // pastMoves.push(childNode.position)
+      console.log(counter++)
     })
-    console.log(pastMoves)
   }
 
   const createChildren = (node) => {
@@ -24,21 +28,23 @@ function Tree(x, y) {
       const checkInBound = (x1 >= 0 && y1 >= 0 && x1 <= 7 && y1 <= 7)
       return checkUnvisited && checkInBound
     })
+
     node.children = validMoves.map(move => {
-      console.log(this)
-      move
       pastMoves.push(move)
-      return Node(...move)
+      return Node(...move, node)
     })
   }
 
   return {
     buildTree,
-    createChildren
+    createChildren,
+    root
   }
 }
 
-Tree(3,3).buildTree()
+const tree = Tree(3,3)
+tree.buildTree()
+console.log(tree.root.children[0].parent)
 
 function Node(x, y, parent) {
   const children = []
